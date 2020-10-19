@@ -27,15 +27,13 @@ function playRound(userInput, computerInput) {
 
     userInput = userInput.toLowerCase();
     computerInput = computerInput.toLowerCase();
-    console.log(userInput);
-    const score = document.querySelector('h2');
 
     // check if userInput and computerInput are the same .
     // if they are equal return 'Draw! userInput , computerInput'.
 
     if(userInput === computerInput) {
-        score.textContent = `Draw! ${userInput} , ${computerInput}`;
-        return [0, 0];
+        console.log(`Draw! ${userInput} , ${computerInput}`);
+        return [1, 1];
     }
 
     // check userInput 
@@ -54,78 +52,57 @@ function playRound(userInput, computerInput) {
 
     if(userInput === 'rock') {
         if(computerInput === 'paper') {
-            score.textContent = 'You Lose! Paper beats Rock';
+            console.log('You Lose! Paper beats Rock');
             return [0, 1];
         }
         else {
-            score.textContent = 'You Win! Rock beats Scissors';
+            console.log('You Win! Rock beats Scissors');
             return [1, 0];
         }
     }
     else if(userInput === 'paper') {
         if(computerInput === 'scissors') {
-            score.textContent = 'You Lose! Scissors beats Paper';
+            console.log('You Lose! Scissors beats Paper');
             return [0, 1];
         }
         else {
-            score.textContent = 'You Win! Paper beats Rock';
+            console.log('You Win! Paper beats Rock');
             return [1, 0];
         }
     }
     else {
         if(computerInput === 'rock') {
-            score.textContent = 'You Lose! Rock beats Scissors';
+            console.log('You Lose! Rock beats Scissors');
             return [0, 1];
         }
         else {
-            score.textContent = 'You Win! Scissors beats Paper';
+            console.log('You Win! Scissors beats Paper');
             return [1, 0];
         }
     }
 }
 
-
-
-
-
-const cards = document.querySelectorAll('.cardElement');
-
-
-
-cards.forEach((c) => {
-    c.addEventListener('mouseover',(ev) =>{
-        ev.target.classList.add('cardHover');
-        ev.target.style.backgroundSize = '62.5px 93.75px';
-        const para = ev.target.firstElementChild;
-        para.style.fontSize = '1.875em';
-        
-    });
-    c.addEventListener('mouseout',(ev) =>{
-        ev.target.classList.remove('cardHover');
-        ev.target.style.backgroundSize = '50px 75px';
-        const para = ev.target.firstElementChild;
-        para.style.fontSize = '1.5em';
-    });
-
-    c.addEventListener('mousedown',(ev) =>{
-        const computerInput = computerPlay();
-        if(ev.target.id === 'rock'){
-            ev.target.style.opacity = '80%';
-            playRound('rock', computerInput);
-        }
-        else if(ev.target.id === 'paper'){
-            playRound('paper', computerInput);
-            ev.target.style.opacity = '80%';
-        }
-        else {
-            playRound('scissors', computerInput);
-            ev.target.style.opacity = '80%';
-        }
-    });
-
-    c.addEventListener('mouseup',(ev) =>{
-        ev.target.style.opacity = '100%';
-    });
-
+// the main function named game that plays five rounds of rock paper scissors the exits
+function game() {
+    // initialize win counter for both player and computerScore
+    let playerScore = 0;
+    let computerScore = 0;
     
-});
+    // make a loop that ::: (loop 5 times)
+
+    for(let i = 0; i < 5; i++) {
+        // ask the user for the input rock paper or scissors as a string
+        const playerSelection = prompt('Choose Rock Paper or Scissors!');
+        // generates a computer string value with computerPlay function
+        const computerSelection = computerPlay();
+        // use playRound function with the two values and increment the result of playerScore and computerScore
+        let tempValue = playRound(playerSelection, computerSelection);
+        playerScore += tempValue[0];
+        computerScore += tempValue[1];
+    }
+    console.log(playerScore);
+    // prints game finished when loop is done and log if player won if playerScore is larger then 2
+    (playerScore > computerScore) ? console.log('You Won Yay!!!') : (playerScore === computerScore) ? console.log('Draw!!!') : console.log('You Lose!!!');
+}
+
+game();

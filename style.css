@@ -22,7 +22,6 @@ h2 {
     color: #ff2fd6;
     height: 50px;
     margin: auto;
-    font-style: italic;
 }
 
 .container {
@@ -40,6 +39,11 @@ h2 {
     align-content: stretch;
     align-items: center;
     height: auto;
+}
+
+.scoreContainer>div {
+    height: 100%;
+    border-bottom: 1px solid #ff2fd6;
 }
 
 .cardContainer {

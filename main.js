@@ -8,6 +8,7 @@ function computerPlay() {
     let picked = random(2);
     // check to see which which number was generated
     // return corresponding word as string
+    console.log(picked);
     return (picked === 0) ? 'Rock' : (picked === 1) ? 'Paper' : 'Scissors';
 }
 
@@ -15,6 +16,11 @@ function computerPlay() {
 function random(a) {
     return Math.floor(Math.random() * (a + 1));
 }
+
+// Global score variables 
+let playerScore = 0;
+let computerScore = 0;
+let roundsPlayed = 0;
 
 // a function named playRound that takes two inputs from the user and the computer and returns a number that tells the user
 // if they won or lost or draw.
@@ -27,16 +33,10 @@ function playRound(userInput, computerInput) {
 
     userInput = userInput.toLowerCase();
     computerInput = computerInput.toLowerCase();
-    console.log(userInput);
     const score = document.querySelector('h2');
 
     // check if userInput and computerInput are the same .
     // if they are equal return 'Draw! userInput , computerInput'.
-
-    if(userInput === computerInput) {
-        score.textContent = `Draw! ${userInput} , ${computerInput}`;
-        return [0, 0];
-    }
 
     // check userInput 
     // if input equals rock
@@ -51,45 +51,85 @@ function playRound(userInput, computerInput) {
         // check if computerInput is Rock
         // if paper return 'You Lose! Rock beats Scissors'
         // else return 'You Win! Scissors beats Paper'
-
-    if(userInput === 'rock') {
+    if(userInput === computerInput) {
+        score.textContent = `Draw! ${userInput} , ${computerInput}`;
+    }
+    else if(userInput === 'rock') {
         if(computerInput === 'paper') {
             score.textContent = 'You Lose! Paper beats Rock';
-            return [0, 1];
+            computerScore += 1;
         }
         else {
             score.textContent = 'You Win! Rock beats Scissors';
-            return [1, 0];
+            playerScore += 1;
         }
     }
     else if(userInput === 'paper') {
         if(computerInput === 'scissors') {
             score.textContent = 'You Lose! Scissors beats Paper';
-            return [0, 1];
+            computerScore += 1;
         }
         else {
             score.textContent = 'You Win! Paper beats Rock';
-            return [1, 0];
+            playerScore += 1;
         }
     }
     else {
         if(computerInput === 'rock') {
             score.textContent = 'You Lose! Rock beats Scissors';
-            return [0, 1];
+            computerScore += 1;
         }
         else {
             score.textContent = 'You Win! Scissors beats Paper';
-            return [1, 0];
+            playerScore += 1;
         }
+    }
+    updateText();
+
+    roundsPlayed += 1;
+
+    if(roundsPlayed >= 5){
+        printWinner();
+        resetGame();
+    }
+
+}
+
+
+function updateText() {
+    const scoreText = document.querySelector('.scoreText');
+    scoreText.textContent = `Player Points ${playerScore}, Computer Points ${computerScore}`;
+}
+
+function resetGame(){
+    playerScore = 0;
+    computerScore = 0;
+    roundsPlayed = 0;
+}
+
+function printWinner(){
+    const text = document.querySelector('h2');
+    if(computerScore === playerScore){
+        text.textContent = 'Draw! No Winners \uD83D\uDE1B';
+    }
+    else if(playerScore > computerScore){
+        text.textContent = 'Player Wins \uD83D\uDE03';
+    }
+    else {
+        text.textContent = 'Computer Wins \uD83D\uDE22';
     }
 }
 
 
-
-
-
 const cards = document.querySelectorAll('.cardElement');
+const resetButton = document.querySelector('button');
 
+resetButton.addEventListener('click', () => {
+    const text = document.querySelector('h2');
+    resetGame();
+    updateText();
+    text.textContent = 'Play again';
+});
 
 
 cards.forEach((c) => {
